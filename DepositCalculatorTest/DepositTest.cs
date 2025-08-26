@@ -7,25 +7,14 @@ namespace DepositCalculatorTest
 {
     public class DepositTest
     {
-        [Fact]
-        public void Should_Calculate_Deposit_CapitalizationMonthly_Correctly()
+        [Theory]
+        [InlineData(InterestPaymentMethodEnum.CapitalizationMonthly, 12533)]
+        [InlineData(InterestPaymentMethodEnum.CapitalizationDaily, 12522)]
+        [InlineData(InterestPaymentMethodEnum.Monthly, 12304)]
+        public void Should_Calculate_Deposit_Correctly(InterestPaymentMethodEnum paymentType, double depositValueToCheck)
         {
-            var deposit = CreateDeposit(InterestPaymentMethodEnum.CapitalizationMonthly);
-            Assert.Equal(12533, Math.Round(deposit.CalculateIncome(), 0));
-        }
-
-        [Fact]
-        public void Should_Calculate_Deposit_CapitalizationDaily_Correctly()
-        {
-            var deposit = CreateDeposit(InterestPaymentMethodEnum.CapitalizationDaily);
-            Assert.Equal(12522, Math.Round(deposit.CalculateIncome(), 0));
-        }
-
-        [Fact]
-        public void Should_Calculate_Deposit_Monthly_Correctly()
-        {
-            var deposit = CreateDeposit(InterestPaymentMethodEnum.Monthly);
-            Assert.Equal(12304, Math.Round(deposit.CalculateIncome(), 0));
+            var deposit = CreateDeposit(paymentType);
+            Assert.Equal(depositValueToCheck, Math.Round(deposit.CalculateIncome(), 0));
         }
 
         private IDeposit CreateDeposit(InterestPaymentMethodEnum method)
